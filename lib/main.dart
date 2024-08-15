@@ -1,20 +1,18 @@
+// lib/main.dart
 import 'package:flutter/material.dart';
-import 'home.dart';
+
+import 'game/ludu_game.dart';
 
 void main() {
-  runApp(LudoGameApp());
+  runApp(MyApp());
 }
 
-class LudoGameApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Ludo Game',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: LudoGame(),
     );
   }
 }

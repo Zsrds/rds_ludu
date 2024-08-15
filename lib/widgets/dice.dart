@@ -1,8 +1,11 @@
-// dice.dart
 import 'package:flutter/material.dart';
 import 'dart:math';
 
 class Dice extends StatefulWidget {
+  final GlobalKey<_DiceState> key;
+
+  Dice({required this.key}) : super(key: key);
+
   @override
   _DiceState createState() => _DiceState();
 }
@@ -11,7 +14,6 @@ class _DiceState extends State<Dice> with SingleTickerProviderStateMixin {
   int _side = 1;
   late AnimationController _controller;
   late Animation<double> _rotationAnimation;
-  late Animation<double> _scaleAnimation;
   late Animation<double> _bounceAnimation;
 
   @override
@@ -25,9 +27,6 @@ class _DiceState extends State<Dice> with SingleTickerProviderStateMixin {
     });
     _rotationAnimation = Tween<double>(begin: 0, end: 4 * pi).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.9).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
     _bounceAnimation = Tween<double>(begin: 1.0, end: 1.1).animate(
       CurvedAnimation(parent: _controller, curve: Curves.elasticInOut),
@@ -43,6 +42,10 @@ class _DiceState extends State<Dice> with SingleTickerProviderStateMixin {
     });
   }
 
+  int getSide() {
+    return _side;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -51,7 +54,7 @@ class _DiceState extends State<Dice> with SingleTickerProviderStateMixin {
         width: 120,
         height: 120,
         decoration: BoxDecoration(
-          color: Colors.transparent, // Transparent background
+          color: Colors.transparent,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.2),
@@ -100,14 +103,12 @@ class DicePainter extends CustomPainter {
     final rect = Rect.fromLTWH(0, 0, size.width, size.height);
     final radius = size.width / 8;
 
-    // Draw dice face with rounded corners
     paint.color = Colors.white;
     canvas.drawRRect(
       RRect.fromRectAndRadius(rect, Radius.circular(12)),
       paint,
     );
 
-    // Draw dots based on the side
     final center = size.center(Offset.zero);
 
     void drawDot(double x, double y) {
